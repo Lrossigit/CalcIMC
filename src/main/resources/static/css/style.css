@@ -1,0 +1,43 @@
+body{
+    background-color: black;
+    color: aliceblue;
+}
+
+.B1{
+    text-align: center;
+}
+
+.L1{
+   margin: 24px;
+}
+
+.L2{
+    margin: 20px;
+    padding-top: 15px;
+}
+
+.btn {
+    background-color:darkmagenta;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+    background-color: magenta;
+    transform: scale(1.05);
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+label{
+    border-radius: 8px;
+    font-size: 16px;
+    padding: 12px 24px;
+}

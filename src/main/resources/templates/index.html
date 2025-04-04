@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculo de IMC</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="B1">
+    <h1>Calcule seu IMC (Indice de Massa Corporal) </h1>
+
+    <h2>Calculadora de IMC</h2>
+    <form id="imcForm">
+        <label for="peso" class="L1">Peso (kg):</label>
+        <input type="number" id="peso" step="0.01" required>
+        <br>
+        <br>
+        <label for="altura" class="L2">Altura (m):</label>
+        <input type="number" id="altura" step="0.01" required>
+        <br>
+        <br>
+        <button type="submit" class="btn">Calcular</button>
+    </form>
+
+    <h3>Resultado:</h3>
+    <p id="resultado"></p>
+
+</div>
+
+    <script>
+        document.getElementById("imcForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const peso = document.getElementById("peso").value;
+            const altura = document.getElementById("altura").value;
+
+            fetch("/api/imc/calcular", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ peso: parseFloat(peso), altura: parseFloat(altura) })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("resultado").innerText =
+                        `IMC: ${data.imc.toFixed(2)} - ${data.classificacao}`;
+                })
+                .catch(error => console.error("Erro ao calcular IMC:", error));
+        });
+    </script>
+</body>
+</html>
