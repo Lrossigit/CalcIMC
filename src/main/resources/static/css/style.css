@@ -8,10 +8,13 @@ body{
 }
 
 .L1{
-   margin: 24px;
+   margin: 34px;
 }
 
 .L2{
+    margin: 23px;
+}
+.L3{
     margin: 20px;
     padding-top: 15px;
 }
@@ -40,4 +43,14 @@ label{
     border-radius: 8px;
     font-size: 16px;
     padding: 12px 24px;
+}
+
+#resultado {
+    padding: 10px;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+    border-radius: 8px;
+    border: 1px solid #494949;
+    background-color: #d1d1d1;
+    color: #494949;
 }

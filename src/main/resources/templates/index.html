@@ -11,11 +11,15 @@
 
     <h2>Calculadora de IMC</h2>
     <form id="imcForm">
-        <label for="peso" class="L1">Peso (kg):</label>
+        <label for="nome" class="L1">Nome:</label>
+        <input type="text" id="nome" required>
+        <br>
+        <br>
+        <label for="peso" class="L2">Peso (kg):</label>
         <input type="number" id="peso" step="0.01" required>
         <br>
         <br>
-        <label for="altura" class="L2">Altura (m):</label>
+        <label for="altura" class="L3">Altura (m):</label>
         <input type="number" id="altura" step="0.01" required>
         <br>
         <br>
@@ -27,25 +31,44 @@
 
 </div>
 
-    <script>
-        document.getElementById("imcForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+<script>
+    document.getElementById("imcForm").addEventListener("submit", function(event) {
+        event.preventDefault();
 
-            const peso = document.getElementById("peso").value;
-            const altura = document.getElementById("altura").value;
+        const nome = document.getElementById("nome").value;
+        const peso = parseFloat(document.getElementById("peso").value);
+        const altura = parseFloat(document.getElementById("altura").value);
 
-            fetch("/api/imc/calcular", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ peso: parseFloat(peso), altura: parseFloat(altura) })
+        fetch("/api/imc/calcular", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ nome: nome, peso: peso, altura: altura })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Resposta do servidor inválida.");
+                }
+                return response.json();
             })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("resultado").innerText =
-                        `IMC: ${data.imc.toFixed(2)} - ${data.classificacao}`;
-                })
-                .catch(error => console.error("Erro ao calcular IMC:", error));
-        });
-    </script>
+            .then(data => {
+                const resultado = document.getElementById("resultado");
+                let cor = "";
+                if (data.classificacao.includes("peso normal")) cor = "green";
+                else if (data.classificacao.includes("Sobrepeso")) cor = "orange";
+                else if (data.classificacao.includes("abaixo")) cor = "blue";
+                else cor = "red";
+
+
+                resultado.innerHTML = `
+                    <strong style="color:${cor}; font-size: 18px;">${data.mensagem}</strong><br><br>
+                    <strong>IMC:</strong> ${data.imc.toFixed(2)}<br>
+                    <strong>Classificação:</strong> ${data.classificacao}
+                `;
+            })
+            .catch(error => {
+                console.error("Erro ao calcular IMC:", error);
+            });
+    });
+</script>
 </body>
 </html>
